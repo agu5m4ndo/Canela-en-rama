@@ -34,6 +34,7 @@ class ProductDao extends MongoDBContainer {
             percentage: object.percentage,
             views: object.views,
             stock: object.stock,
+            measurement: object.measurement,
         });
         await super.create(product);
     }
@@ -61,6 +62,7 @@ class ProductDao extends MongoDBContainer {
             percentage: object.percentage,
             views: object.views,
             stock: object.stock,
+            measurement: object.measurement,
         };
         await super.update({ code: `${object.code}` }, newProduct);
     }
@@ -82,8 +84,8 @@ class ProductDao extends MongoDBContainer {
     static getInstance() {
         if (!instance) {
             instance = new ProductDao();
-            return instance;
         }
+        return instance;
     }
 }
 

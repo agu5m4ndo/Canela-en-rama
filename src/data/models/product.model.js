@@ -11,6 +11,7 @@ const productSchema = new mongoose.Schema({
     percentage: { type: Number, required: true },
     views: { type: Number, required: true },
     stock: { type: Boolean, required: true },
+    measurement: { type: String, required: true },
 });
 
 module.exports = new mongoose.model("products", productSchema);

@@ -42,7 +42,7 @@ class CartDao extends MongoDBContainer {
     }
 
     async addToCart(id, product) {
-        const cart = await super.findOne({ id: `${id}` });
+        const cart = await super.getOne({ id: `${id}` });
         const index = cart.products.findIndex((prod) => {
             return prod.code === product.code;
         });
@@ -56,7 +56,7 @@ class CartDao extends MongoDBContainer {
     }
 
     async removeFromCart(id, idProd) {
-        const cart = await super.findOne({ id: `${id}` });
+        const cart = await super.getOne({ id: `${id}` });
         if (cart.products[idProd]) {
             cart.products.splice(idProd, 1);
             let i = 0;

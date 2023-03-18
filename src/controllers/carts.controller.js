@@ -1,5 +1,6 @@
 const Factory = require("../persistence/factory");
 const cartDao = new Factory().selectDao("cart");
+const productDao = new Factory().selectDao("product");
 
 const createCart = async(req, res) => {
     const cart = await cartDao.createCart();
@@ -7,31 +8,71 @@ const createCart = async(req, res) => {
 };
 
 const removeCart = async(req, res) => {
-    await cartDao.deleteCart(Number(req.params["id"]));
-    res.status(204).json({ success: true });
+    try {
+        await cartDao.deleteCart(Number(req.params["id"]));
+        res.status(204).json({ success: true });
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: `No cart was found with the associated id '${req.params.id}'`,
+        });
+    }
 };
 
 const getCartProducts = async(req, res) => {
-    const products = await cartDao.getCartProducts(Number(req.params["id"]));
-    res.status(200).json({ sucess: true, products });
+    try {
+        const products = await cartDao.getCartProducts(Number(req.params["id"]));
+        res.status(200).json({ sucess: true, products });
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: `No cart was found with the associated id '${req.params.id}'`,
+        });
+    }
 };
 
 const removeFromCart = async(req, res) => {
     const { id, id_prod } = req.params;
-    await cartDao.removeFromCart(Number(id), Number(id_prod));
-    res.status(204).json({ sucess: true });
+    try {
+        await cartDao.removeFromCart(Number(id), Number(id_prod));
+        res.status(204).json({ sucess: true });
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: `No cart was found with the associated id '${id}'`,
+        });
+    }
 };
 
 const updateCart = async(req, res) => {
     const { id, id_prod } = req.params;
-    await cartDao.updateCart(Number(id), Number(id_prod));
-    res.status(203).json({ sucess: true });
+    const { amount } = req.body;
+    try {
+        await cartDao.updateCartProduct(Number(id), Number(id_prod), amount);
+        res.status(203).json({ sucess: true });
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: `No cart was found with the associated id '${id}'`,
+        });
+    }
 };
 
 const addToCart = async(req, res) => {
     const { id, id_prod } = req.params;
-    await cartDao.addToCart(Number(id), Number(id_prod));
-    res.status(203).json({ sucess: true });
+    let product, error;
+    try {
+        product = await productDao.getProductByCode(id_prod);
+        product = product.toObject();
+        product.amount = Number(req.body["amount"]);
+        await cartDao.addToCart(id, product);
+        res.status(203).json({ sucess: true });
+    } catch (error) {
+        res.status(404).json({
+            success: false,
+            message: `No cart was found with the associated id '${id}'`,
+        });
+    }
 };
 
 const getAllCarts = async(req, res) => {
