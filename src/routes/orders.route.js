@@ -1,13 +1,21 @@
 const { Router } = require("express"),
   router = Router(),
-  {} = require("../controllers/orders.controller.js"),
+  {
+    createOrder,
+    editOrder,
+    getAllOrders,
+    getOneOrder,
+    removeOrder,
+    searchOrders,
+  } = require("../controllers/orders.controller.js"),
   { admin } = require("../middleware/auth.js");
 
-// router.route("/").get();
-// router
-//   .route("/:id")
-//   .get(getOneProduct)
-//   .delete(admin, removeProduct)
-//   .put(admin, editProduct);
+router.route("/").get(getAllOrders).post(createOrder);
+router.route("/search").get(searchOrders);
+router
+  .route("/:number")
+  .get(getOneOrder)
+  .delete(removeOrder) //admin
+  .put(editOrder); //admin
 
 module.exports = router;

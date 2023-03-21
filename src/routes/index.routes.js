@@ -13,7 +13,7 @@ const { Router } = require("express"),
 router.use("/api/products", products);
 router.use("/api/carts", carts);
 router.use("/api/orders", orders);
-// router.use("/api/reviews", review);
+router.use("/api/reviews", review);
 // router.use("/api/checkout", checkout);
 // router.use("/api/profile", profile);
 // router.use("/login", login);
