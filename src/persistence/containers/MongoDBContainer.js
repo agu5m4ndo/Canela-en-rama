@@ -38,9 +38,9 @@ class MongoDBContainer {
     }
   }
 
-  async update(identifier, newObject) {
+  async update(identifier, updates) {
     try {
-      await this.model.updateOne(identifier, newObject);
+      await this.model.updateOne(identifier, updates);
     } catch (err) {
       console.log(err);
     }

@@ -14,9 +14,7 @@ class OrderDao extends MongoDBContainer {
       status: "new",
       stage: "waiting",
       products: [...object.products],
-      userEmail: object.email,
-      userName: object.name,
-      phoneNumber: object.phoneNumber,
+      ...object,
     });
     await super.create(order);
     return order.number;
@@ -36,17 +34,7 @@ class OrderDao extends MongoDBContainer {
   }
 
   async updateOrder(order) {
-    const newOrder = {
-      number: order.number,
-      orderDate: order.orderDate,
-      status: order.status,
-      stage: order.stage,
-      products: order.products,
-      userEmail: order.email,
-      userName: order.name,
-      phoneNumber: order.phoneNumber,
-    };
-    await super.update({ number: order.number }, newOrder);
+    await super.update({ number: order.number }, { $set: order });
   }
 
   static getInstance() {

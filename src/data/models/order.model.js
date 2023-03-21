@@ -11,8 +11,9 @@ const orderSchema = new mongoose.Schema({
       code: { type: Number, required: true },
       stockPrice: { type: Number, required: true },
       stock: { type: Boolean, required: true },
+      percentage: { type: Number, required: true },
       measurement: { type: String, required: true },
-      amount: { type: Number, required: true },
+      amount: { type: Number, required: true }, //REVISAR LOS DAOS PORQUE AGREGUÉ PERCENTAGE
       id: { type: Number, required: true },
     },
   ],

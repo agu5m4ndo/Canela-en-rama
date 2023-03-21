@@ -1,5 +1,5 @@
 const MongoDBContainer = require("../containers/MongoDBContainer"),
-  reviewModel = require("../../data/models/review.model.js");
+  { reviewModel } = require("../../data/models/review.model.js");
 let instance;
 
 class ReviewDao extends MongoDBContainer {
@@ -9,11 +9,7 @@ class ReviewDao extends MongoDBContainer {
 
   async createReview(object) {
     const review = new reviewModel({
-      stars: object.stars,
-      userName: object.name,
-      userEmail: object.email,
-      profilePicture: object.profilePicture,
-      message: object.message,
+      ...object,
     });
     await super.create(review);
   }
@@ -27,15 +23,9 @@ class ReviewDao extends MongoDBContainer {
     await super.delete({ userEmail: `${email}` });
   }
 
-  async updateReview(review) {
-    const newReview = {
-      stars: review.stars,
-      userName: review.name,
-      userEmail: review.email,
-      profilePicture: review.profilePicture,
-      message: review.message,
-    };
-    await super.update({ userEmail: review.email }, newReview);
+  async updateReview(updates) {
+    console.log(updates);
+    await super.update({ userEmail: updates.email }, { $set: updates });
   }
 
   static getInstance() {

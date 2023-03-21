@@ -1,11 +1,15 @@
 const mongoose = require("mongoose");
 
 const reviewSchema = new mongoose.Schema({
-  stars: { type: Number, required: true },
-  userName: { type: String, required: true },
-  userEmail: { type: String, required: true },
-  profilePicture: { type: String, required: true },
+  stars: { type: Number },
+  userName: { type: String },
+  userEmail: { type: String },
+  profilePicture: { type: String },
   message: { type: String },
 });
 
-module.exports = new mongoose.model("review", reviewSchema);
+const reviewModel = new mongoose.model("review", reviewSchema);
+module.exports = {
+  reviewModel,
+  reviewSchema,
+};
